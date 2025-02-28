@@ -56,7 +56,8 @@ def pagina_insumos_drawback():
 # Função para exibir a página Producao_Entregas
 def pagina_producao_entregas():
     # Caminho para o arquivo Producao_Entregas.py
-    caminho_producao_entregas = r"C:\Users\fjvpa\PycharmProjects\PythonProject1\Producao_Entregas.py"
+    caminho_producao_entregas = "https://github.com/fjvpaiva/teste_dash_senei/blob/main/Producao_Entregas.py"
+    #caminho_producao_entregas = r"C:\Users\fjvpa\PycharmProjects\PythonProject1\Producao_Entregas.py"
 
     # Verifica se o arquivo existe
     if os.path.exists(caminho_producao_entregas):
