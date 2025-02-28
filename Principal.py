@@ -1,4 +1,5 @@
 import streamlit as st
+import plotly as px
 import requests #1
 import os
 
