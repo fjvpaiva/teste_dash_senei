@@ -1,4 +1,5 @@
 import streamlit as st
+import requests #1
 import os
 
 st.set_page_config(layout="wide")
@@ -17,7 +18,6 @@ def verificar_login(usuario, senha):
         return True
     return False
 
-# Função para exibir a página Principal
 def pagina_principal():
     st.title("Página Principal")
     st.write("Bem-vindo à página Principal! Aqui você pode acessar as outras páginas.")
@@ -25,70 +25,53 @@ def pagina_principal():
     # Links para as páginas subalternas
     if st.button("Insumos e Drawback"):
         st.session_state["pagina_atual"] = "Insumos_Drawback"
-        st.rerun()
 
     if st.button("Produção e Entregas"):
         st.session_state["pagina_atual"] = "Producao_Entregas"
-        st.rerun()
 
     if st.button("Financeiro"):
         st.session_state["pagina_atual"] = "Financeiro"
-        st.rerun()
+
+# Função para carregar e exibir um arquivo do GitHub
+def carregar_arquivo_github(url):
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            exec(response.text)  # Executa o código do arquivo
+        else:
+            st.error(f"Erro ao carregar o arquivo: {response.status_code}")
+    except Exception as e:
+        st.error(f"Erro ao executar o arquivo: {e}")
 
 # Função para exibir a página Insumos_Drawback
 def pagina_insumos_drawback():
-    # Caminho para o arquivo Insumos_Drawback.py
-    caminho_insumos_drawback = r"C:\Users\fjvpa\PycharmProjects\PythonProject1\Insumos_Drawback.py"
-
-    # Verifica se o arquivo existe
-    if os.path.exists(caminho_insumos_drawback):
-        # Lê e executa o conteúdo do arquivo
-        with open(caminho_insumos_drawback, "r", encoding="utf-8") as file:
-            exec(file.read())
-    else:
-        st.error("Arquivo Insumos_Drawback.py não encontrado!")
+    st.title("Insumos e Drawback")
+    url_github = "https://raw.githubusercontent.com/fjvpaiva/teste_dash_senei/main/Insumos_Drawback.py"
+    carregar_arquivo_github(url_github)
 
     # Botão para retornar à página Principal
     if st.button("Voltar à Página Principal"):
         st.session_state["pagina_atual"] = "Principal"
-        st.rerun()
 
 # Função para exibir a página Producao_Entregas
 def pagina_producao_entregas():
-    # Caminho para o arquivo Producao_Entregas.py
-    caminho_producao_entregas = r"https://github.com/fjvpaiva/teste_dash_senei/blob/main/Producao_Entregas.py"
-    
-
-    # Verifica se o arquivo existe
-    if os.path.exists(caminho_producao_entregas):
-        # Lê e executa o conteúdo do arquivo
-        with open(caminho_producao_entregas, "r", encoding="utf-8") as file:
-            exec(file.read())
-    else:
-        st.error("Arquivo Producao_Entregas.py não encontrado!")
+    st.title("Produção e Entregas")
+    url_github = "https://raw.githubusercontent.com/fjvpaiva/teste_dash_senei/main/Producao_Entregas.py"
+    carregar_arquivo_github(url_github)
 
     # Botão para retornar à página Principal
     if st.button("Voltar à Página Principal"):
         st.session_state["pagina_atual"] = "Principal"
-        st.rerun()
 
 # Função para exibir a página Financeiro
 def pagina_financeiro():
-    # Caminho para o arquivo Financeiro.py
-    caminho_financeiro = r"C:\Users\fjvpa\PycharmProjects\PythonProject1\Financeiro.py"
-
-    # Verifica se o arquivo existe
-    if os.path.exists(caminho_financeiro):
-        # Lê e executa o conteúdo do arquivo
-        with open(caminho_financeiro, "r", encoding="utf-8") as file:
-            exec(file.read())
-    else:
-        st.error("Arquivo Financeiro.py não encontrado!")
+    st.title("Financeiro")
+    url_github = "https://raw.githubusercontent.com/fjvpaiva/teste_dash_senei/main/Financeiro.py"
+    carregar_arquivo_github(url_github)
 
     # Botão para retornar à página Principal
     if st.button("Voltar à Página Principal"):
         st.session_state["pagina_atual"] = "Principal"
-        st.rerun()
 
 # Lógica principal do aplicativo
 def main():
@@ -111,7 +94,6 @@ def main():
                 st.session_state["logado"] = True
                 st.session_state["nome"] = usuarios[usuario]["nome"]
                 st.session_state["usuario"] = usuario
-                st.rerun()  # Recarrega a página após o login
             else:
                 st.error("Usuário ou senha incorretos")
 
@@ -119,7 +101,6 @@ def main():
         if st.session_state["pagina_atual"] != "Principal":
             st.warning("Você precisa fazer login para acessar esta página.")
             st.session_state["pagina_atual"] = "Principal"
-            st.rerun()
         return  # Impede a execução do restante do código se não estiver logado
 
     # Páginas após o login
@@ -131,7 +112,6 @@ def main():
         if st.sidebar.button("Logout"):
             st.session_state["logado"] = False
             st.session_state["pagina_atual"] = "Principal"
-            st.rerun()  # Recarrega a página após o logout
 
         # Navegação entre as páginas
         if st.session_state["pagina_atual"] == "Principal":
